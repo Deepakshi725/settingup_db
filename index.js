@@ -1,10 +1,25 @@
+require("dotenv").config();
+const { error } = require("console");
 const express = require('express');
+const mongoose = require("mongoose");
 const { resolve } = require('path');
 
 const app = express();
 const port = 3010;
 
+//Middleware
 app.use(express.static('static'));
+
+
+//Mongodb connection
+
+mongoose.connect(process.env.Mongo_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log("Connected to database"))
+.catch((error) => {
+  console.error("Error connecting to database:", error.message);
+});
 
 app.get('/', (req, res) => {
   res.sendFile(resolve(__dirname, 'pages/index.html'));
